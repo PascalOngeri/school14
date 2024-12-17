@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>{{.Title}}</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #4CAF50;
+        }
+        .navbar .navbar-brand h3 {
+            color: #fff;
+        }
+        .navbar .navbar-nav .nav-link {
+            color: white;
+        }
+        .navbar .navbar-nav .nav-link:hover {
+            background-color: #45a049;
+        }
+
+        /* Popup Styling */
+        .popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+        .popup.success {
+            background-color: #28a745;
+        }
+        .popup.failed {
+            background-color: #dc3545;
+        }
+
+        /* Loader Styling */
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 1.5s linear infinite;
+            margin: auto;
+            margin-top: 20%;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Section Styling */
+        #section {
+            margin: 30px auto;
+        }
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-custom {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 20px;
+            height: 40px;
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            background-color: #45a049;
+        }
+
+        .table-striped th, .table-striped td {
+            text-align: center;
+        }
+
+        /* Responsive Styling */
+        @media screen and (max-width: 768px) {
+            .navbar .navbar-collapse {
+                text-align: center;
+            }
+
+            .content, .right-pdf {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+
+    <script>
+        var sessionTimeout = 600; // Session timeout in seconds (10 minutes)
+
+        function redirectToLogout() {
+            window.location.href = 'logout.php';
+        }
+
+        function startSessionTimer() {
+            var timer = setTimeout(redirectToLogout, sessionTimeout * 1000);
+
+            window.addEventListener('mousemove', function() {
+                clearTimeout(timer);
+                timer = setTimeout(redirectToLogout, sessionTimeout * 1000);
+            });
+
+            window.addEventListener('keypress', function() {
+                clearTimeout(timer);
+                timer = setTimeout(redirectToLogout, sessionTimeout * 1000);
+            });
+        }
+
+        window.onload = function() {
+            startSessionTimer();
+        };
+
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">
+            <h3>Infinityschools Analytics</h3>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.infinitytechafrica.com" onclick="showLoader();"><i class="fas fa-globe"></i> Visit Website</a>
+                </li>
+                <li class="nav-item">
+                    <form method="POST" action="/SUR">
+                        <button type="submit" class="nav-link btn btn-link" onclick="showLoader();"><i class="fa fa-file-pdf"></i> Download Fee Structure</button>
+                    </form>
+                </li>
+              
+
+
+
+                
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#updateModal" onclick="showLoader();"><i class="fa fa-user"></i> Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" onclick="showLoader();"><i class="fa fa-sign-out-alt"></i> Log out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Loader -->
+    <div class="loader" id="loader"></div>
+
+    <!-- Update Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="settings-form" method="post" action="/updateuserinfo">
+                        <input type="hidden" class="input3" name="adm" value="{{.AdmissionNumber}}">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" value="{{.Username}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" value="{{.Password}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="{{.Phone}}">
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="update" onclick="showLoader();">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <div id="section">
+        <center>
+            <h3>Welcome {{.Username}}</h3>
+            <label>Student Admission number {{.AdmissionNumber}}</label>
+            <br>
+             <label>Fee Balance {{.Feebal}}</label>
+        </center>
+        <hr>
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <div class="content">
+                    <center>
+                        <h3>Pay Fee</h3>
+                         <div id="popup" class="popup"></div>
+                        <form method="post" action="/ProcessPayment">
+                            <input type="hidden" class="input3" name="adm" value="{{.AdmissionNumber}}">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="phone" placeholder="Enter phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="nu" class="form-control" name="ammount" placeholder="Enter amount" required>
+                            </div>
+                            <button type="submit" class="btn-custom" name="pay" onclick="showLoader();">Pay</button>
+                        </form>
+                    </center>
+                    <hr>
+                    <center>
+                        <h3>Click to Download</h3>
+                        <form method="post" action="/generate">
+                             <input type="hidden" class="input3" name="adm" value="{{.AdmissionNumber}}">
+                            <button type="submit" class="btn btn-info btn-custom" name="action" value="generate" onclick="showLoader();">Download Fee Statement</button>
+                        </form>
+
+                    <form method="GET" action="/fee-report">
+                        <button type="submit" class="nav-link btn btn-link" onclick="showLoader();"><i class="fa fa-file-pdf"></i> Download Fee Receipt</button>
+                    </form>
+              
+                    </center>
+                </div>
+            </div>
+ <div class="col-md-6">
+                <div class="content right-pdf">
+                    <center>
+                        <h3>Public Notices</h3>
+                        <table class="table table-striped table-bordered">
+                             </thead>
+                         <tbody>
+                            {{range .Notices}}
+                          <tr>
+                           
+                            <td>1</td>
+                            <td>{{.Title}}</td>
+                            <td>{{.Message}}</td>
+                                                      
+ 
+                          </tr>
+                          {{end}}
+                        </tbody>
+                        </table>
+                    </center>
+                </div>
+            </div>
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <div class="content right-pdf">
+                    <center>
+                        <h3>Payment  History</h3>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>SNo</th>
+                                                <th>RegNo</th>
+                                                <th>Date</th>
+                                                <th>Amount Received</th>
+                                                <th>Balance</th>
+                                               
+                                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .Payments}}
+                            <tr>
+                                <td>{{.SNo}}</td>
+                                <td>{{.RegNo}}</td>
+                                <td>{{.Date}}</td>
+                                <td>{{.Amount}}</td>
+                                <td>{{.Balance}}</td>
+                                <td width="100">
+                                    &nbsp;&nbsp;
+                                                    <a href="
+                                                    " class="btn btn-primary btn-xs" style="background-color: green" >Received</a>
+                                   </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                        </table>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Messages -->
+    <div id="popup-message" class="popup success">Operation Successful</div>
+    <div id="error-message" class="popup failed">Operation Failed</div>
+    <script>
+    // Function to display the popup message
+    function showPopup(message, status) {
+        const popup = document.getElementById('popup');
+        popup.textContent = message;
+        popup.className = `popup ${status}`; // Apply the relevant class
+        popup.style.display = 'block'; // Show the popup
+
+        // Hide the popup after 3 seconds and redirect to /parent
+        setTimeout(() => {
+            popup.style.display = 'none';
+            window.location.href = '/parent'; // Redirect to /parent
+        }, 3000);
+    }
+
+    // Check the query parameters in the URL
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+
+    // Show the popup based on the status
+    if (status === 'success') {
+        showPopup('Payment received successfully!', 'success');
+    } else if (status === 'failed') {
+        showPopup('Payment failed!', 'failed');
+    }
+
+
+</script>
+</body>
+</html>
