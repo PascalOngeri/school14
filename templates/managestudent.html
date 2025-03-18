@@ -1,0 +1,197 @@
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+    {{ template "sidebar" . }}
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">Manage Students</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Manage Students</li>
+                    </ol>
+                </nav>
+            </div>
+          <div id="modalBackground" style="display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 999;">
+</div>
+
+<!-- Modal Container -->
+<div id="filterSectionModal" style="display: none; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    background-color: #f8f9fa; 
+    padding: 30px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    z-index: 1000; 
+    width: 80%; 
+    max-width: 500px;">
+    
+    <form method="GET" action="/managestudent" style="display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+        margin: 0;">
+
+        <!-- Class Selection -->
+        <label for="classSelect" style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Select Class:</label>
+        <select name="class" id="classSelect" style="padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; transition: all 0.3s ease;">
+            <option value="">Select a Class</option>
+            {{ range .Classes }}
+                <option value="{{ . }}">{{ . }}</option>
+            {{ end }}
+        </select>
+
+        <!-- Fee Balance Filter -->
+        <label for="feeBalance" style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Filter by Fee Balance:</label>
+        <input type="number" name="feeBalance" id="feeBalance" placeholder="Enter fee balance" style="padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; transition: all 0.3s ease;">
+
+        <!-- Fee Comparison Type -->
+        <label for="feeComparison" style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Select Comparison:</label>
+        <select name="feeComparison" id="feeComparison" style="padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; transition: all 0.3s ease;">
+            <option value="lessThan">Less than or equal to</option>
+            <option value="equalTo">Equal to</option>
+            <option value="greaterThan">Greater than or equal to</option>
+        </select>
+
+        <!-- Submit Button -->
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; font-size: 12px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; transition: all 0.3s ease;">Filter</button>
+
+
+
+        <!-- Close Button -->
+       
+    </form>
+    <button type="button" id="exportCSV" onclick="exportCSV()" 
+    style="padding: 10px 20px; background-color: #28a745; color: white; font-size: 12px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; transition: all 0.3s ease; margin-top: 15px;">
+    Export as CSV
+</button>
+ <button type="button" id="closeModal" style="padding: 10px 20px; background-color: #dc3545; color: white; font-size: 12px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; transition: all 0.3s ease; margin-top: 15px;">Close</button>
+</div>
+
+
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-sm-flex align-items-center mb-4">
+                                <h4 class="card-title mb-sm-0">Manage Students</h4>
+                                <a href="#" class="text-dark ml-auto mb-3 mb-sm-0">View all Students</a>
+                            </div>
+
+                            <!-- Class Selection Form -->
+                           <button id="toggleFilterButton" style="padding: 10px 20px; margin: 20px auto; background-color: #28a745; color: white; font-size: 14px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; transition: all 0.3s ease;">Show Filters</button>
+
+                            <!-- Table to Display Students -->
+                            <div class="table-responsive border rounded p-1">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="font-weight-bold">Admission no.</th>
+                                            <th class="font-weight-bold">Student Name</th>
+                                            <th class="font-weight-bold">Class/Grade/Form</th>
+                                            <th class="font-weight-bold">Fee Balance</th>
+                                            <th class="font-weight-bold">Parent Phone</th>
+                                            <th class="font-weight-bold">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ range .Students }}
+                                        <tr>
+                                            <td>{{ .Adm }}</td>
+                                            <td>{{ .Fname }} {{ .Mname }} {{ .Lname }}</td>
+                                            <td>{{ .Class }}</td>
+                                            <td>{{ .Fee }}</td>
+                                            <td>{{ .Phone }}</td>
+                                            <td>
+                                                <a href="/updatestudent?id={{ .Adm }}" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
+                                                <a href="/deletestudent?id={{ .ID }}" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="button" id="exportCSV" onclick="exportCSV()" 
+    style="padding: 10px 20px; background-color: #28a745; color: white; font-size: 12px; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; transition: all 0.3s ease; margin-top: 15px;">
+    Export student data as CSV
+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <script>
+    // JavaScript to toggle visibility of the modal and background
+    const toggleFilterButton = document.getElementById('toggleFilterButton');
+    const filterSectionModal = document.getElementById('filterSectionModal');
+    const modalBackground = document.getElementById('modalBackground');
+    const closeModalButton = document.getElementById('closeModal');
+
+    toggleFilterButton.addEventListener('click', () => {
+        // Show the modal and background
+        filterSectionModal.style.display = 'block';
+        modalBackground.style.display = 'block';
+        toggleFilterButton.style.display = 'none'; // Hide the show filter button when modal is displayed
+    });
+
+    closeModalButton.addEventListener('click', () => {
+        // Hide the modal and background
+        filterSectionModal.style.display = 'none';
+        modalBackground.style.display = 'none';
+        toggleFilterButton.style.display = 'block'; // Show the filter button again
+    });
+
+    // Close modal if clicking outside the modal
+    modalBackground.addEventListener('click', () => {
+        filterSectionModal.style.display = 'none';
+        modalBackground.style.display = 'none';
+        toggleFilterButton.style.display = 'block'; // Show the filter button again
+    });
+
+
+     
+</script>
+<!-- HTML for the button -->
+
+<script>
+    function exportCSV() {
+        console.log("Export CSV function triggered");
+
+        // Get the selected filters
+        var classFilter = document.getElementById("classSelect").value;
+        var feeFilter = document.getElementById("feeBalance").value;
+        var feeComparison = document.getElementById("feeComparison").value;
+
+        // Construct the export URL with filters
+        var url = "/export?";
+
+        if (classFilter) {
+            url += "class=" + classFilter + "&";
+        }
+        if (feeFilter) {
+            url += "feeBalance=" + feeFilter + "&feeComparison=" + feeComparison;
+        }
+
+        // Trim the URL to remove any trailing '&' character
+        url = url.replace(/&$/, "");
+
+        // Redirect to the export URL (this triggers the download)
+        window.location.href = url;
+    }
+</script>
+
+        <br><br>
+        {{ template "scripts" . }}
+    </div>
+</div>

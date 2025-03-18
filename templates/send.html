@@ -1,0 +1,234 @@
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+             
+            
+{{ template "sidebar" . }}
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h3 class="page-title"> Contact parents </h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Contact parents</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <form class="forms-sample" method="post" action="/send">
+               <div class="form-group">
+  <label for="exampleInputName1">Enter phone number</label>
+  <input type="text" name="phone" class="form-control" id="phone-input" value="{{.PhoneNumbers}}"  placeholder="Enter phone number">
+</div>
+
+                <div class="form-group">
+                  <label for="exampleInputName1">Message body</label>
+                  <input type="text" name="message" value="" class="form-control" placeholder="Enter message">
+                </div>
+                 <!--  <input type="file" name="file" />
+                <input type="submit" name="teacherexcel" id="teacherexcel" class="btn btn-info btn-lg" value="Import Excel" />
+                -->
+                <button type="submit" class="btn btn-primary mr-2" name="send">Send</button> 
+              </form>
+             
+<div class="container" style="display: flex; justify-content: space-between; gap: 20px;">
+
+    <!-- Upload Form Container -->
+    <div class="upload-container" style="
+        width: 48%;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    ">
+    <h4>Upload/Select All</h4>
+        <!-- Phone Selection Form -->
+        <form id="fetch-phone-form">
+            <button type="submit" class="btn btn-primary" style="
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                border-radius: 4px;
+                cursor: pointer;
+                background-color: #4CAF50;
+                border: none;
+                transition: background-color 0.3s;
+            ">Select all phone numbers</button>
+        </form>
+        
+        <br>
+or
+        <!-- File Upload Form -->
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <div class="input-group mb-3" style="display: flex; align-items: center; justify-content: space-between;">
+                <input 
+                    type="file" 
+                    name="file" 
+                    id="file" 
+                    class="form-control" 
+                    style="flex: 1; padding-right: 10px; border-radius: 4px; font-size: 14px;" 
+                    required>
+                <button 
+                    type="submit" 
+                    class="btn btn-primary btn-lg" 
+                    style="padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; background-color: #4CAF50; border: none; margin-left: 10px; transition: background-color 0.3s;">
+                    Click to Upload Phone from csv file
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filter Form Container -->
+    <div class="filter-container" style="
+    width: 48%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+">
+    <!-- Filter Form -->
+    <form id="filterForm" action="/sel" method="GET">
+        <!-- Class Filter -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="classFilter" style="font-size: 14px;">Class:</label>
+            <select id="classFilter" name="class" class="form-control" style="font-size: 14px; padding: 10px;">
+                <option value="">Select Class</option>
+                <!-- Classes will be added dynamically here -->
+            </select>
+        </div>
+        <!-- Fee Balance Filter -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="feeBalanceFilter" style="font-size: 14px;">Fee Balance:</label>
+            <input type="number" id="feeBalanceFilter" name="feeBalance" class="form-control" placeholder="Enter fee balance" style="font-size: 14px; padding: 10px;">
+        </div>
+
+        <!-- Fee Comparison Filter -->
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="feeComparison" style="font-size: 14px;">Fee Comparison:</label>
+            <select id="feeComparison" name="feeComparison" class="form-control" style="font-size: 14px; padding: 10px;">
+                <option value="lessThan">Less  than</option>
+                <option value="equalTo">Equal To</option>
+                <option value="greaterThan">Greater than</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" id="filterButton" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; background-color: #007bff; border: none; transition: background-color 0.3s;">
+            Filter
+        </button>
+    </form>
+</div>
+
+
+
+</div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+  
+<script>
+    // Function to fetch classes automatically when the page loads
+    function fetchData() {
+        fetch('/sel')  // Ensure '/sel' is your endpoint to fetch data
+            .then(response => response.json())
+            .then(data => {
+                // Populate the class select dropdown
+                const classSelect = document.getElementById('classFilter');
+                classSelect.innerHTML = '<option value="">Select Class</option>'; // Clear existing options
+
+                data.classes.forEach(className => {
+                    const option = document.createElement('option');
+                    option.value = className;
+                    option.textContent = className;
+                    classSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    // Function to fetch filtered data based on selected filters
+    function fetchFilteredData() {
+        const form = document.getElementById('filterForm');
+        const formData = new FormData(form); // Collect form data
+
+        // Create URLSearchParams from the FormData object
+        const queryParams = new URLSearchParams(formData).toString();
+
+        // Send the request when the Filter button is clicked
+        fetch(`/sel?${queryParams}`)
+            .then(response => response.json())
+            .then(data => {
+                // Populate the class select dropdown (if not already done)
+                const classSelect = document.getElementById('classFilter');
+                classSelect.innerHTML = '<option value="">Select Class</option>'; // Clear existing options
+
+                data.classes.forEach(className => {
+                    const option = document.createElement('option');
+                    option.value = className;
+                    option.textContent = className;
+                    classSelect.appendChild(option);
+                });
+
+                // Populate the phone input field with the phone numbers from the response
+                const phoneInput = document.getElementById('phone-input');
+                phoneInput.value = data.phoneNumbers;  // Assuming the response contains phone numbers as a string
+            })
+            .catch(error => {
+                console.error('Error fetching filtered data:', error);
+            });
+    }
+
+    // Add event listener to the Filter button to trigger the filtered data fetch
+    document.getElementById('filterButton').addEventListener('click', function() {
+        fetchFilteredData(); // Call fetchFilteredData when the Filter button is clicked
+    });
+
+    // Automatically fetch classes when the page loads
+    window.onload = fetchData;
+</script>
+
+     <script>
+  // Add an event listener to handle form submission
+  document.getElementById("fetch-phone-form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Send a POST request to fetch phone numbers
+    fetch("/api/select-phones", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch phone numbers");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Update the phone input field with the fetched phone numbers
+        const phoneInput = document.getElementById("phone-input");
+        phoneInput.value = data.phoneNumbers || "No phone numbers found";
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while fetching phone numbers.");
+      });
+  });
+</script>
+      
+    </div>
+
+    {{ template "scripts" . }}
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
