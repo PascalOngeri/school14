@@ -8,6 +8,10 @@ import (
 	
 )
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 237dca4 (Initial commit)
 // Payment represents a payment structure
 type Payment struct {
 	PaymentName string
@@ -36,6 +40,10 @@ type PageData struct {
 	CompulsoryPayments []Payment
 	OptionalPayments   []Payment
 	BusPayments        []Payment
+<<<<<<< HEAD
+=======
+	Role               string 
+>>>>>>> 237dca4 (Initial commit)
 }
 
 // FetchPayments retrieves payments from the database based on the payment type
@@ -90,6 +98,18 @@ func FetchPayments(db *sql.DB, paymentType string) ([]Payment, error) {
 // UpdatePaymentHandler handles the request to update payments and render the template
 func UpdatePaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Fetch data for compulsory payments
+<<<<<<< HEAD
+=======
+
+	radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 	compulsoryPayments, err := FetchPayments(db, "compulsory")
 	if err != nil {
 		http.Error(w, "Failed to fetch compulsory payments", http.StatusInternalServerError)
@@ -115,6 +135,10 @@ func UpdatePaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		CompulsoryPayments: compulsoryPayments,
 		OptionalPayments:   optionalPayments,
 		BusPayments:        busPayments,
+<<<<<<< HEAD
+=======
+		Role: rada,
+>>>>>>> 237dca4 (Initial commit)
 	}
 
 	// Parse and execute the template

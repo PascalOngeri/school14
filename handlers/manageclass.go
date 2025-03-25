@@ -16,8 +16,20 @@ roleCookie, err := r.Cookie("role")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
+<<<<<<< HEAD
 	
 	role := roleCookie.Value
+=======
+	radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	role := roleCookie.Value
+	rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -58,9 +70,18 @@ roleCookie, err := r.Cookie("role")
 		log.Printf("Error parsing template files: %v\n", err) // Debug log
 		return
 	}
+<<<<<<< HEAD
 
 	// Execute the template with the fetched data
 	err = tmpl.Execute(w, users)
+=======
+data := map[string]interface{}{
+			"users": users,
+			"Role":  rada,
+		}
+	// Execute the template with the fetched data
+	err = tmpl.Execute(w, data)
+>>>>>>> 237dca4 (Initial commit)
 	if err != nil {
 		http.Error(w, "Template execution failed: "+err.Error(), http.StatusInternalServerError)
 		log.Printf("Error executing template: %v\n", err) // Debug log

@@ -13,6 +13,10 @@ type HomePageData struct {
 	Username        string
 	AdmissionNumber string
 	Password        string
+<<<<<<< HEAD
+=======
+		Role        string
+>>>>>>> 237dca4 (Initial commit)
 	Feebal        string
 	Phone           string
 	Payments        []Payment
@@ -22,6 +26,13 @@ type HomePageData struct {
 // HomeHandler handles the request for the user home page
 func HomeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Get cookies for user info
+<<<<<<< HEAD
+=======
+
+
+
+	
+>>>>>>> 237dca4 (Initial commit)
 	roleCookie, err := r.Cookie("role")
 	if err != nil {
 		log.Printf("Error getting role cookie: %v", err)
@@ -105,6 +116,11 @@ log.Printf("Password cookie retrieved: %s", pass.Value)
 			Payments:        payments,
 			Notices:         notices,
 			Feebal:              fee,
+<<<<<<< HEAD
+=======
+			
+				
+>>>>>>> 237dca4 (Initial commit)
 		}
 
 		// Render the template

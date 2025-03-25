@@ -69,8 +69,20 @@ roleCookie, err := r.Cookie("role")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
+<<<<<<< HEAD
 	
 	role := roleCookie.Value
+=======
+	radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	role := roleCookie.Value
+	rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -85,6 +97,10 @@ roleCookie, err := r.Cookie("role")
 		return
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 237dca4 (Initial commit)
 	// Fetch classes from the database
 	var classes []Class
 	rows, err := db.Query("SELECT id, class FROM classes")
@@ -198,6 +214,10 @@ roleCookie, err := r.Cookie("role")
 	data := map[string]interface{}{
 		"Title":   "Add Students",
 		"Classes": classes,
+<<<<<<< HEAD
+=======
+			"Role": rada,
+>>>>>>> 237dca4 (Initial commit)
 	}
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -4,8 +4,14 @@ import (
 	"database/sql"
 	"html/template"
 	"log"
+<<<<<<< HEAD
 	"net/http"
 
+=======
+	"fmt"
+	"net/http"
+"encoding/json"
+>>>>>>> 237dca4 (Initial commit)
 	"golang.org/x/crypto/bcrypt"
 	
 )
@@ -23,7 +29,13 @@ roleCookie, err := r.Cookie("role")
 		return
 	}
 	
+<<<<<<< HEAD
 	role := roleCookie.Value
+=======
+
+	role := roleCookie.Value
+	//rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -45,6 +57,10 @@ roleCookie, err := r.Cookie("role")
 				email := r.FormValue("email")
 				pass := r.FormValue("password")
 				username := r.FormValue("username")
+<<<<<<< HEAD
+=======
+				role := r.FormValue("role")
+>>>>>>> 237dca4 (Initial commit)
 
 				// Validate input
 				if AName == "" || mobno == "" || email == "" || pass == "" || username == "" {
@@ -62,8 +78,13 @@ roleCookie, err := r.Cookie("role")
 				}
  log.Printf("Authenticated user: %s",  hashedPassword)
 				// Insert data into the database
+<<<<<<< HEAD
 				query := `INSERT INTO tbladmin (AdminName, Email, UserName, Password, MobileNumber) VALUES (?, ?, ?, ?, ?)`
 				_, err = db.Exec(query, AName, email, username, pass, mobno)
+=======
+				query := `INSERT INTO tbladmin (AdminName, Email, UserName, Password, MobileNumber,role) VALUES (?,?, ?, ?, ?, ?)`
+				_, err = db.Exec(query, AName, email, username, pass, mobno,role)
+>>>>>>> 237dca4 (Initial commit)
 				if err != nil {
 					log.Printf("Database insertion error: %v", err)
 					http.Error(w, "Failed to add user: "+err.Error(), http.StatusInternalServerError)
@@ -130,3 +151,163 @@ roleCookie, err := r.Cookie("role")
 	}
 }
 }
+<<<<<<< HEAD
+=======
+// FetchAllUsers retrieves all users from the tbladmin table
+func FetchAllUsers(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		rows, err := db.Query("SELECT AdminName, Email, UserName, MobileNumber, role ,ID FROM tbladmin")
+		if err != nil {
+			log.Printf("Database query error: %v", err)
+			http.Error(w, `{"error": "Failed to fetch users"}`, http.StatusInternalServerError)
+			return
+		}
+		defer rows.Close()
+
+		var users []map[string]string
+
+		for rows.Next() {
+			var AName, email, username, mobno, role,ID string
+			if err := rows.Scan(&AName, &email, &username, &mobno, &role,&ID); err != nil {
+				log.Printf("Row scan error: %v", err)
+				http.Error(w, `{"error": "Failed to scan users"}`, http.StatusInternalServerError)
+				return
+			}
+
+			user := map[string]string{
+				"AdminName":    AName,
+				"Email":        email,
+				"UserName":     username,
+				"MobileNumber": mobno,
+				"Role":         role,
+				"ID":         ID,
+
+			}
+			users = append(users, user)
+		}
+
+		if err = rows.Err(); err != nil {
+			log.Printf("Row iteration error: %v", err)
+			http.Error(w, `{"error": "Error iterating over users"}`, http.StatusInternalServerError)
+			return
+		}
+
+		// Encode users as JSON and send response
+		if err := json.NewEncoder(w).Encode(users); err != nil {
+			log.Printf("JSON encoding error: %v", err)
+			http.Error(w, `{"error": "Failed to encode JSON"}`, http.StatusInternalServerError)
+		}
+	}
+}
+func DeleteUserHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost { // Ensure it's a POST request
+			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Parse form data
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, "Failed to parse request", http.StatusBadRequest)
+			return
+		}
+
+		// Ensure correct field name ("username" not "userId")
+		username := r.FormValue("username")
+		if username == "" {
+			http.Error(w, "Username is required", http.StatusBadRequest)
+			return
+		}
+
+		fmt.Println("Deleting user:", username) // Debugging log
+
+		// Delete user from DB
+		result, err := db.Exec("DELETE FROM tblAdmin WHERE UserName = ?", username)
+		if err != nil {
+			fmt.Println("DB Error:", err) // Debugging log
+			http.Error(w, "Failed to delete user", http.StatusInternalServerError)
+			return
+		}
+
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			fmt.Println("Error getting rows affected:", err) // Debugging log
+			http.Error(w, "Failed to fetch deletion status", http.StatusInternalServerError)
+			return
+		}
+
+		if rowsAffected == 0 {
+			http.Error(w, "User not found", http.StatusNotFound)
+			return
+		}
+
+		// Send JSON success response
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]bool{"success": true})
+	}
+}
+func EditUserHandler(db *sql.DB) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        if r.Method != http.MethodPost {
+            http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+            return
+        }
+
+        // Parse form data
+        err := r.ParseForm()
+        if err != nil {
+            http.Error(w, "Failed to parse form", http.StatusBadRequest)
+            return
+        }
+
+  
+        adminName := r.FormValue("adminname")
+        username := r.FormValue("username")
+        mobileNumber := r.FormValue("mobilenumber")
+        email := r.FormValue("email")
+        role := r.FormValue("role")
+
+    
+if adminName == "" {
+    http.Error(w, "Error: adminname is required", http.StatusBadRequest)
+    return
+}
+if username == "" {
+    http.Error(w, "Error: username is required", http.StatusBadRequest)
+    return
+}
+if mobileNumber == "" {
+    http.Error(w, "Error: mobilenumber is required", http.StatusBadRequest)
+    return
+}
+if email == "" {
+    http.Error(w, "Error: email is required", http.StatusBadRequest)
+    return
+}
+if role == "" {
+    http.Error(w, "Error: role is required", http.StatusBadRequest)
+    return
+}
+
+
+        // Update user details in the database
+        query := "UPDATE tblAdmin SET AdminName=?, UserName=?, MobileNumber=?, Email=?, role=? WHERE Email=?"
+        result, err := db.Exec(query, adminName, username, mobileNumber, email, role, email)
+        if err != nil {
+            http.Error(w, "Failed to update user", http.StatusInternalServerError)
+            return
+        }
+
+        rowsAffected, _ := result.RowsAffected()
+        if rowsAffected == 0 {
+            http.Error(w, "User not found", http.StatusNotFound)
+            return
+        }
+
+http.Redirect(w, r, "/adduser", http.StatusSeeOther)
+    }
+}
+>>>>>>> 237dca4 (Initial commit)

@@ -1,4 +1,5 @@
 {{ define "sidebar" }}
+<<<<<<< HEAD
 
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
           <ul class="nav">
@@ -130,3 +131,126 @@
           </ul>
         </nav>
         {{ end }}
+=======
+<nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: linear-gradient(135deg, #2c3e50, #34495e);">
+    <ul class="nav">
+        <!-- Profile Section -->
+        <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+                <div class="profile-image">
+                    <div class="dot-indicator bg-success"></div>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                        <div class="dropdown-header d-flex">
+                            <img class="img-md rounded-circle" src="assets/images/faces/face8.jpg" width="60px" alt="Profile image">
+                            <div>
+                                <p class="mb-1 mt-3 text-white">Simon</p>
+                                <p class="font-weight-light text-muted mb-0">s@gmail.com</p>
+                            </div>
+                        </div>
+                        <a class="dropdown-item" href="profile.html"><i class="dropdown-item-icon icon-user text-primary"></i> <span class="text-dark">My Profile</span></a>
+                        <a class="dropdown-item" href="change-password.html"><i class="dropdown-item-icon icon-energy text-primary"></i> <span class="text-dark">Change Password</span></a>
+                        <a class="dropdown-item" href="logout.html"><i class="dropdown-item-icon icon-power text-primary"></i> <span class="text-dark">Sign Out</span></a>
+                    </div>
+                </div>
+            </a>
+        </li>
+
+        <!-- Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard">
+                <i class="icon-home menu-icon text-primary"></i>
+                <span class="menu-title text-white">Dashboard</span>
+            </a>
+        </li>
+
+        <!-- Class Section -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <i class="icon-layers menu-icon text-warning"></i>
+                <span class="menu-title text-white">Class</span>
+                <i class="menu-arrow text-white"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link text-light" href="/addclass">Add Class</a></li>
+                    <li class="nav-item"> <a class="nav-link text-light" href="/manage">Manage Class</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Manage Fee Section -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-fee" aria-expanded="false" aria-controls="ui-fee">
+                <i class="icon-credit-card menu-icon text-danger"></i>
+                <span class="menu-title text-white">Manage Fee</span>
+                <i class="menu-arrow text-white"></i>
+            </a>
+            <div class="collapse" id="ui-fee">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link text-light" href="/payfee">Pay Fee</a></li>
+                    <li class="nav-item"> <a class="nav-link text-light" href="/setfee">Set Fee</a></li>
+                    <li class="nav-item"> <a class="nav-link text-light" href="/updatepayment">Update Fee</a></li>
+                    <li class="nav-item"> <a class="nav-link text-light" href="/optionalpay">Optional Payments</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Students Section -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic1" aria-expanded="false" aria-controls="ui-basic1">
+                <i class="icon-people menu-icon text-success"></i>
+                <span class="menu-title text-white">Students</span>
+                <i class="menu-arrow text-white"></i>
+            </a>
+            <div class="collapse" id="ui-basic1">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link text-light" href="/addstudent">Add Students</a></li>
+                    <li class="nav-item"> <a class="nav-link text-light" href="/managestudent">Manage Students</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Public Notice Section -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth1" aria-expanded="false" aria-controls="auth1">
+                <i class="icon-doc menu-icon text-info"></i>
+                <span class="menu-title text-white">Public Notice</span>
+                <i class="menu-arrow text-white"></i>
+            </a>
+            <div class="collapse" id="auth1">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link text-light" href="/addpubnot">Add Public Notice</a></li>
+                    <li class="nav-item"> <a class="nav-link text-light" href="/managepubnot">Manage Public Notice</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Messages -->
+        <li class="nav-item">
+            <a class="nav-link" href="/send">
+                <i class="icon-envelope menu-icon text-secondary"></i>
+                <span class="menu-title text-white">Messages</span>
+            </a>
+        </li>
+
+        <!-- Settings -->
+        <li class="nav-item">
+            <a class="nav-link" href="/setting">
+                <i class="icon-settings menu-icon text-primary"></i>
+                <span class="menu-title text-white">Settings</span>
+            </a>
+        </li>
+
+        <!-- Manage Users (Super Admin Only) -->
+        {{ if eq .Role "superadmin" }}
+        <li class="nav-item">
+            <a class="nav-link" href="/adduser">
+                <i class="icon-user-follow menu-icon text-warning"></i>
+                <span class="menu-title text-white">Manage Users</span>
+            </a>
+        </li>
+        {{ end }}
+    </ul>
+</nav>
+{{ end }}
+>>>>>>> 237dca4 (Initial commit)

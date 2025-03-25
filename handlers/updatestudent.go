@@ -60,8 +60,20 @@ func UpdateUserFormHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
+<<<<<<< HEAD
 	
 	role := roleCookie.Value
+=======
+	radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	role := roleCookie.Value
+	rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -92,9 +104,24 @@ func UpdateUserFormHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			http.Error(w, "Template not found", http.StatusInternalServerError)
 			return
 		}
+<<<<<<< HEAD
 
 		// Render template with user data
 		if err := tmpl.Execute(w, user); err != nil {
+=======
+data := map[string]interface{}{
+			"Title":"user",
+			"Role":  rada,
+		}
+		// Merge user struct into the data map
+data["User"] = user
+
+// Execute template with the combined data
+
+
+		// Render template with user data
+		if err := tmpl.Execute(w, data); err != nil {
+>>>>>>> 237dca4 (Initial commit)
 			log.Printf("Error executing template: %v", err)
 			http.Error(w, "Error rendering template", http.StatusInternalServerError)
 			return

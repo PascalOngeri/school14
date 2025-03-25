@@ -1,5 +1,6 @@
 {{ template "header" . }}
 <div class="container-fluid page-body-wrapper">
+<<<<<<< HEAD
              
             
 {{ template "sidebar" . }}
@@ -107,3 +108,85 @@ $('.summernote').summernote({
   })
 })
 </script>
+=======
+    {{ template "sidebar" . }}
+    
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header d-flex justify-content-between align-items-center">
+                <h3 class="page-title">Manage Setting</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-light p-2 rounded">
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Settings</li>
+                    </ol>
+                </nav>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-12 col-md-10">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="text-center mb-4">System Setting</h4>
+                            
+                            <form class="forms-sample" method="post" action="/setting" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="customFile">System Logo</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile" name="image" accept="image/*" onchange="displayImg(this, $(this))">
+                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group d-flex justify-content-center">
+                                    <img src="/assets/images/{{.Icon}}" alt="Current Logo" id="cimg" class="img-fluid img-thumbnail rounded-circle shadow-sm" style="width: 150px; height: 150px; object-fit: cover;">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="name">School Name</label>
+                                    <input type="text" class="form-control form-control-sm" name="name" id="name" value="{{.Name}}">
+                                </div>
+                                
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg px-4">Update Settings</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {{ template "scripts" . }}
+    </div>
+</div>
+
+<script>
+function displayImg(input, _this) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#cimg').attr('src', e.target.result);
+            _this.siblings('.custom-file-label').html(input.files[0].name);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$(document).ready(function(){
+    $('.summernote').summernote({
+        height: 200,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ol', 'ul', 'paragraph', 'height']],
+            ['table', ['table']],
+            ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
+        ]
+    });
+});
+</script>
+>>>>>>> 237dca4 (Initial commit)

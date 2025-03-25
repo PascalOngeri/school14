@@ -49,14 +49,38 @@ return true;
     <div class="container-scroller">
  <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
        
+<<<<<<< HEAD
         <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
           <h5 class="mb-0 font-weight-medium d-none d-lg-flex mx-auto"> infinity schools System Registered to infinity!</h5>
+=======
+        <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1" style="background-color: lightblue;">
+          <img id="apiIcon" class="img-md rounded-circle" src="assets/images/logo.png" width="60px" alt="Profile image">
+  
+          <h5 class="mb-0 font-weight-medium d-none d-lg-flex mx-auto" style="
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #007bff, #00bcd4);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+">
+    Infinity Schools Finance management System 
+</h5>
+>>>>>>> 237dca4 (Initial commit)
           <div id="google_translate_element" class="ml-auto"></div>
 
           <ul class="navbar-nav navbar-nav-right ml-auto">
             <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+<<<<<<< HEAD
                 <img class="img-xs rounded-circle ml-2" src="assets/images/faces/face8.jpg" alt="Profile image"> <span class="font-weight-normal"></span></a>
+=======
+                <img class="img-xs rounded-circle ml-2"  src="assets/images/faces/face8.jpg" alt="Profile image"> <span class="font-weight-normal"></span></a>
+>>>>>>> 237dca4 (Initial commit)
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                 <div class="dropdown-header d-flex">
                   <img class="img-md rounded-circle" src="assets/images/faces/face8.jpg" width="60px" alt="Profile image">
@@ -75,4 +99,27 @@ return true;
           </button>
         </div>
       </nav>
+<<<<<<< HEAD
+=======
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: "/api/details",  // API route
+      type: "GET",
+      dataType: "json",
+      success: function(response) {
+        if (response.name && response.icon) {
+          $("#apiName").text(response.name);  // Set API name
+          $("#apiIcon").attr("src", "assets/images/" + response.icon);  // Set API icon
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error("Error fetching API details:", error);
+      }
+    });
+  });
+</script>
+
+>>>>>>> 237dca4 (Initial commit)
       {{ end }}

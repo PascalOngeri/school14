@@ -16,8 +16,20 @@ func UpdateBusPaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB)
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
+<<<<<<< HEAD
 	
 	role := roleCookie.Value
+=======
+	radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	role := roleCookie.Value
+	rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -44,6 +56,11 @@ func UpdateBusPaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB)
 			T2     string
 			T3     string
 			Amount float64
+<<<<<<< HEAD
+=======
+			Role string
+			
+>>>>>>> 237dca4 (Initial commit)
 		}{
 			ID:     id,
 			Area:   area,
@@ -51,6 +68,10 @@ func UpdateBusPaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB)
 			T2:     t2,
 			T3:     t3,
 			Amount: amount,
+<<<<<<< HEAD
+=======
+			Role: rada,
+>>>>>>> 237dca4 (Initial commit)
 		}
 
 		// Render the template with current bus payment data

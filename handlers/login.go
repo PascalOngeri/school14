@@ -7,7 +7,11 @@ import (
 	"log"
 	"net/http"
 	"time"
+<<<<<<< HEAD
 
+=======
+"encoding/json"
+>>>>>>> 237dca4 (Initial commit)
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -44,9 +48,48 @@ func getAPIDetails(db *sql.DB) (API, error) {
 	}
 	return api, nil
 }
+<<<<<<< HEAD
 
 // Render the login page
 func renderLoginPage(w http.ResponseWriter, api API, username string) {
+=======
+type APIDetail struct {
+	Name  string `json:"name"`
+	Icon  string `json:"icon"`
+	IName string `json:"iname"`
+}
+
+func GetAPIDetail(db *sql.DB) (APIDetail, error) {
+	var detail APIDetail
+	query := "SELECT name, icon, iname FROM api LIMIT 1"
+	row := db.QueryRow(query)
+	err := row.Scan(&detail.Name, &detail.Icon, &detail.IName)
+	if err != nil {
+		log.Printf("Error fetching API details: %v", err)
+		return detail, err
+	}
+	return detail, nil
+}
+
+// APIDetailHandler serves API details in JSON format
+func APIDetailHandler(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		detail, err := GetAPIDetail(db)
+		if err != nil {
+			http.Error(w, `{"error": "Failed to fetch API details"}`, http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(w).Encode(detail)
+	}
+}
+// Render the login page
+func renderLoginPage(w http.ResponseWriter, api API, username string) {
+
+		
+>>>>>>> 237dca4 (Initial commit)
 	loginData := LoginData{
 		Name:     api.Name,
 		Icon:     api.Icon,
@@ -72,6 +115,7 @@ func HandleLogin(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 		var userID int
 		var foundInAdmin bool
+<<<<<<< HEAD
 		var adm, phone, role,form string
 		var fee float64
 
@@ -79,6 +123,15 @@ func HandleLogin(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		queryAdmin := "SELECT ID, UserName, Password FROM tbladmin WHERE UserName = ?"
 		var storedPassword string
 		err := db.QueryRow(queryAdmin, username).Scan(&userID, &username, &storedPassword)
+=======
+		var adm, phone, role,form,rada string
+		var fee float64
+
+		// Authenticate user in tbladmin
+		queryAdmin := "SELECT ID, UserName, Password,role FROM tbladmin WHERE UserName = ?"
+		var storedPassword string
+		err := db.QueryRow(queryAdmin, username).Scan(&userID, &username, &storedPassword,&rada)
+>>>>>>> 237dca4 (Initial commit)
 		if err == nil && password == storedPassword { // Plain text password comparison
 			foundInAdmin = true
 			role = "admin"
@@ -91,7 +144,11 @@ func HandleLogin(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				return
 			}
 			role = "user"
+<<<<<<< HEAD
 			log.Printf("User ID: %d, Adm: %s, Username: %s, Phone: %s, Fee: %f", userID, adm, username, phone, fee)
+=======
+			log.Printf("User ID: %d, Adm: %s, Username: %s, Phone: %s, Fee: %f.Rada: %f", userID, adm, username, phone, fee,rada)
+>>>>>>> 237dca4 (Initial commit)
 		}
 
 		// Set cookies for user details
@@ -102,6 +159,15 @@ func HandleLogin(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			HttpOnly: true,
 		})
 		http.SetCookie(w, &http.Cookie{
+<<<<<<< HEAD
+=======
+			Name:     "rada",
+			Value:    rada,
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
+		http.SetCookie(w, &http.Cookie{
+>>>>>>> 237dca4 (Initial commit)
 			Name:     "form",
 			Value:    form,
 			Expires:  time.Now().Add(sessionDuration),
@@ -144,7 +210,13 @@ http.SetCookie(w, &http.Cookie{
     Expires:  time.Now().Add(sessionDuration),
     HttpOnly: true,
 })
+<<<<<<< HEAD
 
+=======
+for _, cookie := range r.Cookies() {
+		log.Printf("Session Cookie - Name: %s, Value: %s", cookie.Name, cookie.Value)
+	}
+>>>>>>> 237dca4 (Initial commit)
 		// Redirect based on role
 		if foundInAdmin {
 			http.Redirect(w, r, "/dashboard", http.StatusSeeOther)

@@ -1,6 +1,10 @@
 {{ template "header" . }}
 <div class="container-fluid page-body-wrapper">
   {{ template "sidebar" . }}
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 237dca4 (Initial commit)
   <div class="main-panel">
     <div class="content-wrapper">
       <div class="page-header">
@@ -18,6 +22,7 @@
             <div class="card-body">
               <h4 class="card-title" style="text-align: center;">Update Other Payment</h4>
               <form class="forms-sample" method="post" action="/edit-other-payment">
+<<<<<<< HEAD
                 <input type="hidden" name="id" value="{{.ID}}" />
                 <div class="form-group">
                   <label>Payment Type</label>
@@ -34,6 +39,24 @@
                 <div class="form-group">
                   <label>Term 3</label>
                   <input type="text" name="dob" class="form-control" value="{{.Term3}}" required>
+=======
+                <input type="hidden" name="id" value="{{.Title.ID}}" />
+                <div class="form-group">
+                  <label>Payment Type</label>
+                  <input type="text" name="fname" class="form-control" value="{{.Title.Type}}" required>
+                </div>
+                <div class="form-group">
+                  <label>Term 1</label>
+                  <input type="text" name="lname" class="form-control" value="{{.Title.Term1}}" required>
+                </div>
+                <div class="form-group">
+                  <label>Term 2</label>
+                  <input type="text" name="stuemail" class="form-control" value="{{.Title.Term2}}" required>
+                </div>
+                <div class="form-group">
+                  <label>Term 3</label>
+                  <input type="text" name="dob" class="form-control" value="{{.Title.Term3}}" required>
+>>>>>>> 237dca4 (Initial commit)
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Update</button>
               </form>

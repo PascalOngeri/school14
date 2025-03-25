@@ -19,8 +19,20 @@ func UserInfoHandler(db *sql.DB) http.HandlerFunc {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
+<<<<<<< HEAD
 
 		role := roleCookie.Value
+=======
+// radaCookie, err := r.Cookie("rada")
+// 	if err != nil {
+// 		log.Printf("Error getting rada cookie: %v", err)
+// 		http.Redirect(w, r, "/login", http.StatusSeeOther)
+// 		return
+// 	}
+
+	role := roleCookie.Value
+	//rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 		ID := idCookie.Value
 
 		if role != "admin" {

@@ -54,8 +54,20 @@ func ManageStudent(db *sql.DB) http.HandlerFunc {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
+<<<<<<< HEAD
 
 		role := roleCookie.Value
+=======
+radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	role := roleCookie.Value
+	rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 		if role == "admin" {
 			var sele []SelectStudent
 			var classes []string
@@ -162,7 +174,12 @@ func ManageStudent(db *sql.DB) http.HandlerFunc {
 				Classes     []string
 				FeeFilter   string
 				FeeComparison string
+<<<<<<< HEAD
 			}{sele, classes, feeFilter, feeComparison})
+=======
+				Role string
+			}{sele, classes, feeFilter, feeComparison,rada})
+>>>>>>> 237dca4 (Initial commit)
 			if err != nil {
 				http.Error(w, "Template execution failed: "+err.Error(), http.StatusInternalServerError)
 				log.Printf("Error executing template: %v\n", err)

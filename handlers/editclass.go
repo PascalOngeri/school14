@@ -18,8 +18,20 @@ roleCookie, err := r.Cookie("role")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
+<<<<<<< HEAD
 	
 	role := roleCookie.Value
+=======
+	radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	role := roleCookie.Value
+	rada := radaCookie.Value
+>>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -55,6 +67,10 @@ roleCookie, err := r.Cookie("role")
 		data := map[string]interface{}{
 			"Title": "Edit Class",
 			"Class": class,
+<<<<<<< HEAD
+=======
+			"Role":  rada,
+>>>>>>> 237dca4 (Initial commit)
 		}
 
 		err = tmpl.Execute(w, data)

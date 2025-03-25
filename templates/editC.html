@@ -1,6 +1,10 @@
 {{ template "header" . }}
 <div class="container-fluid page-body-wrapper">
   {{ template "sidebar" . }}
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 237dca4 (Initial commit)
   <div class="main-panel">
     <div class="content-wrapper">
       <div class="page-header">
@@ -19,6 +23,7 @@
               <h4 class="card-title" style="text-align: center;">Update Payment</h4>
 
               <form class="forms-sample" method="post" action="/edit-compulsory-payment">
+<<<<<<< HEAD
                 <input type="hidden" name="id" value="{{ .ID }}" class="form-control">
                 <div class="form-group">
                   <label for="fname">Payment Name</label>
@@ -39,6 +44,28 @@
                 <div class="form-group">
                   <label for="dob">Term 3</label>
                   <input type="text" name="dob" value="{{ .Term3 }}" class="form-control" required>
+=======
+                <input type="hidden" name="id" value="{{ .Title.ID }}" class="form-control">
+                <div class="form-group">
+                  <label for="fname">Payment Name</label>
+                  <input type="text" name="fname" value="{{ .Title.PaymentName }}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="mname">Form/Class/Grade</label>
+                  <input type="text" name="mname" value="{{ .Title.ClassName }}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="lname">Term 1</label>
+                  <input type="text" name="lname" value="{{ .Title.Term1 }}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="stuemail">Term 2</label>
+                  <input type="text" name="stuemail" value="{{ .Title.Term2 }}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="dob">Term 3</label>
+                  <input type="text" name="dob" value="{{ .Title.Term3 }}" class="form-control" required>
+>>>>>>> 237dca4 (Initial commit)
                 </div>
                 <button type="submit" class="btn btn-primary mr-2" name="submit">Update</button>
               </form>

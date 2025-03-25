@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 
@@ -143,3 +144,143 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
    
+=======
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+  {{ template "sidebar" . }}
+
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 grid-margin">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="d-sm-flex align-items-baseline report-summary-header">
+                    <h5 class="font-weight-semibold">Report Summary</h5>
+                    <span class="ml-auto">Updated Report</span>
+                    <button class="btn btn-icons border-0 p-2" id="refreshData">
+                      <i class="icon-refresh"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row" id="reportSummary">
+                <!-- Data will be loaded here dynamically -->
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="piechart" style="width: 100%; height: 500px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ template "scripts" . }}
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(fetchAndDrawChart);
+
+  function fetchAndDrawChart() {
+    $.ajax({
+      url: '/getCounts', // API endpoint
+      method: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        updateReportSummary(response);
+        drawChart(response);
+      },
+      error: function(error) {
+        console.log("Error fetching data", error);
+      }
+    });
+  }
+
+  function updateReportSummary(data) {
+    let reportHtml = `
+      <div class="col-md-6 report-inner-cards-wrapper">
+        <div class="report-inner-card color-1">
+          <div class="inner-card-text text-white">
+            <span class="report-title">Total Class</span>
+            <h4>${data.total_classes}</h4>
+            <a href="/manage">
+              <span class="report-count">View Classes</span>
+            </a>
+          </div>
+          <div class="inner-card-icon">
+            <i class="icon-rocket"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 report-inner-cards-wrapper">
+        <div class="report-inner-card color-2">
+          <div class="inner-card-text text-white">
+            <span class="report-title">Total Students</span>
+            <h4>${data.total_students}</h4>
+            <a href="/managestudent">
+              <span class="report-count">View Students</span>
+            </a>
+          </div>
+          <div class="inner-card-icon">
+            <i class="icon-user"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 report-inner-cards-wrapper">
+        <div class="report-inner-card color-3">
+          <div class="inner-card-text text-white">
+            <span class="report-title">Total Class Notice</span>
+            <h4>${data.total_class_notices}</h4>
+            <a href="/addpubnot">
+              <span class="report-count">Add Notices</span>
+            </a>
+          </div>
+          <div class="inner-card-icon">
+            <i class="icon-doc"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 report-inner-cards-wrapper">
+        <div class="report-inner-card color-4">
+          <div class="inner-card-text text-white">
+            <span class="report-title">Total Public Notice</span>
+            <h4>${data.total_public_notices}</h4>
+            <a href="/managepubnot">
+              <span class="report-count">View Public Notices</span>
+            </a>
+          </div>
+          <div class="inner-card-icon">
+            <i class="icon-doc"></i>
+          </div>
+        </div>
+      </div>`;
+    $('#reportSummary').html(reportHtml);
+  }
+
+  function drawChart(data) {
+    var chartData = google.visualization.arrayToDataTable([
+      ['Task', 'Count'],
+      ['Total Class', data.total_classes],
+      ['Total Students', data.total_students],
+      ['Total Class Notice', data.total_class_notices],
+      ['Total Public Notice', data.total_public_notices]
+    ]);
+
+    var options = { title: 'Report Summary' };
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(chartData, options);
+  }
+
+  $('#refreshData').click(fetchAndDrawChart);
+</script>
+>>>>>>> 237dca4 (Initial commit)

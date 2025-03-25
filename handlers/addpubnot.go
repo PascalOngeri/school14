@@ -5,7 +5,10 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 237dca4 (Initial commit)
 )
 
 func AddPubNot(w http.ResponseWriter, r *http.Request, db *sql.DB) {
@@ -15,11 +18,30 @@ func AddPubNot(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
+<<<<<<< HEAD
 	
 	role := roleCookie.Value
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
+=======
+	radaCookie, err := r.Cookie("rada")
+	if err != nil {
+		log.Printf("Error getting rada cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	role := roleCookie.Value
+	rada := radaCookie.Value
+
+	// If role is not "admin", redirect to login
+	if role != "admin" {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+
+>>>>>>> 237dca4 (Initial commit)
 	if r.Method == http.MethodPost {
 		// Parse the form data
 		if err := r.ParseForm(); err != nil {
@@ -68,6 +90,7 @@ func AddPubNot(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 
+<<<<<<< HEAD
 	// Execute the template
 	err = tmpl.Execute(w, nil)
 	if err != nil {
@@ -81,3 +104,18 @@ func AddPubNot(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	}
 
 }
+=======
+	data := map[string]interface{}{
+		"Title": "Admin Dashboard",
+		"Role":  rada,
+	}
+
+	// Execute the template
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, "Template execution failed: "+err.Error(), http.StatusInternalServerError)
+		log.Printf("Error executing template: %v", err)
+	}
+}
+
+>>>>>>> 237dca4 (Initial commit)
