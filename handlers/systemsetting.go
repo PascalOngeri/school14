@@ -10,9 +10,6 @@ import (
 	"os"
 	"path/filepath"
 )
-<<<<<<< HEAD
-
-=======
 type APO struct {
 	Name  string
 	Icon  string
@@ -29,7 +26,6 @@ func getAPODetails(db *sql.DB) (APO, error) {
 	}
 	return apii, nil
 }
->>>>>>> 237dca4 (Initial commit)
 // SettingsHandler handles settings updates
 func SettingsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	roleCookie, err := r.Cookie("role")
@@ -38,10 +34,6 @@ func SettingsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-<<<<<<< HEAD
-	
-	role := roleCookie.Value
-=======
 	radaCookie, err := r.Cookie("rada")
 	if err != nil {
 		log.Printf("Error getting rada cookie: %v", err)
@@ -51,7 +43,6 @@ func SettingsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 	role := roleCookie.Value
 	rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -72,11 +63,6 @@ func SettingsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		log.Printf("Template parsing error: %v", err)
 		return
 	}
-<<<<<<< HEAD
-
-	// Render the settings page
-	if err := tmpl.Execute(w, nil); err != nil {
-=======
 // Fetch API details
 apii, err := getAPODetails(db)
 if err != nil {
@@ -94,7 +80,6 @@ data := map[string]interface{}{
 
 	// Render the settings page
 	if err := tmpl.Execute(w,data); err != nil {
->>>>>>> 237dca4 (Initial commit)
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		log.Printf("Template execution error: %v", err)
 	}
@@ -104,28 +89,16 @@ data := map[string]interface{}{
 	}
 }
 
-<<<<<<< HEAD
-// handlePostRequest handles the POST logic
-func handlePostRequest(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	// Parse the form
-	err := r.ParseMultipartForm(10 << 20) // Limit upload size to 10 MB
-=======
 func handlePostRequest(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	err := r.ParseMultipartForm(10 << 20)
->>>>>>> 237dca4 (Initial commit)
 	if err != nil {
 		http.Error(w, "Invalid form data", http.StatusBadRequest)
 		log.Printf("Form parsing error: %v", err)
 		return
 	}
 
-<<<<<<< HEAD
-	// Handle file upload
-	filePath, err := saveUploadedFile(r)
-=======
 	// Get image filename (not full path)
 	imageName, err := saveUploadedFile(r)
->>>>>>> 237dca4 (Initial commit)
 	if err != nil {
 		http.Error(w, "File upload failed", http.StatusInternalServerError)
 		log.Printf("File upload error: %v", err)
@@ -140,35 +113,21 @@ func handlePostRequest(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 
-<<<<<<< HEAD
-	// Update the database
-	query := "UPDATE api SET icon = ?, name = ?"
-	_, err = db.Exec(query, filePath, schoolName)
-=======
 	// Update database (save only the image filename)
 	query := "UPDATE api SET icon = ?, name = ?"
 	_, err = db.Exec(query, imageName, schoolName)
->>>>>>> 237dca4 (Initial commit)
 	if err != nil {
 		http.Error(w, "Database update failed", http.StatusInternalServerError)
 		log.Printf("Database query error: %v", err)
 		return
 	}
 
-<<<<<<< HEAD
-	log.Printf("Updated settings: School Name - %s, Logo Path - %s", schoolName, filePath)
-=======
 	log.Printf("Updated settings: School Name - %s, Logo Name - %s", schoolName, imageName)
->>>>>>> 237dca4 (Initial commit)
 
 	// Redirect to settings page
 	http.Redirect(w, r, "/setting", http.StatusSeeOther)
 }
 
-<<<<<<< HEAD
-// saveUploadedFile handles the file upload and saves it to the server
-=======
->>>>>>> 237dca4 (Initial commit)
 func saveUploadedFile(r *http.Request) (string, error) {
 	file, handler, err := r.FormFile("image")
 	if err != nil {
@@ -176,30 +135,18 @@ func saveUploadedFile(r *http.Request) (string, error) {
 	}
 	defer file.Close()
 
-<<<<<<< HEAD
-	// Validate file type (optional)
-=======
 	// Validate file type
->>>>>>> 237dca4 (Initial commit)
 	if !validateFileType(handler) {
 		return "", http.ErrNotSupported
 	}
 
 	// Ensure upload directory exists
-<<<<<<< HEAD
-	uploadDir := "assets/images/uploads"
-=======
 	uploadDir := "assets/images"
->>>>>>> 237dca4 (Initial commit)
 	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
 		os.MkdirAll(uploadDir, os.ModePerm)
 	}
 
-<<<<<<< HEAD
-	// Save file
-=======
 	// Save file (only store the filename, not full path)
->>>>>>> 237dca4 (Initial commit)
 	filePath := filepath.Join(uploadDir, handler.Filename)
 	out, err := os.Create(filePath)
 	if err != nil {
@@ -208,16 +155,10 @@ func saveUploadedFile(r *http.Request) (string, error) {
 	defer out.Close()
 
 	_, err = out.ReadFrom(file)
-<<<<<<< HEAD
-	return filePath, err
-}
-
-=======
 	return handler.Filename, err // Return only the filename
 }
 
 
->>>>>>> 237dca4 (Initial commit)
 // validateFileType ensures the uploaded file is an image
 func validateFileType(fileHeader *multipart.FileHeader) bool {
 	allowedTypes := []string{"image/jpeg", "image/png", "image/gif"}

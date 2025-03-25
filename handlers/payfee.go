@@ -362,10 +362,6 @@
 // }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 237dca4 (Initial commit)
 package handlers
 
 import (
@@ -379,15 +375,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-<<<<<<< HEAD
-// PayFeeHandler handles fee payment logic and sends an SMS notification upon successful payment
-func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	// Retrieve the user's role from the cookie
-=======
 
 // PayFeeHandler handles fee payment logic and sends an SMS notification upon successful payment
 func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
->>>>>>> 237dca4 (Initial commit)
 	roleCookie, err := r.Cookie("role")
 	if err != nil {
 		log.Printf("[ERROR] Unable to retrieve role cookie: %v", err)
@@ -395,37 +385,6 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 
-<<<<<<< HEAD
-	role := roleCookie.Value // Get the role value from the cookie
-
-	// Only allow access if the user is an admin
-	if role == "admin" {
-		if r.Method == http.MethodPost {
-			adm := r.FormValue("adm")      // Get admission number from form
-			amount := r.FormValue("ammount") // Get payment amount from form
-
-			// Validate that admission number is provided
-			if adm == "" {
-				log.Println("[ERROR] Admission number is missing")
-				http.Error(w, "Admission number is required", http.StatusBadRequest)
-				return
-			}
-
-			// Validate and convert amount
-			if amount == "" {
-				log.Println("[ERROR] Amount is missing")
-				http.Error(w, "Amount is required", http.StatusBadRequest)
-				return
-			}
-			amt, err := strconv.ParseFloat(amount, 64)
-			if err != nil || amt <= 0 {
-				log.Printf("[ERROR] Invalid amount format: %s", amount)
-				http.Error(w, "Invalid amount format. Please enter a positive number, e.g., 2000.00", http.StatusBadRequest)
-				return
-			}
-
-			// Fetch current fee balance for the given admission number
-=======
 	radaCookie, err := r.Cookie("rada")
 	if err != nil {
 		log.Printf("[ERROR] Unable to retrieve rada cookie: %v", err)
@@ -452,53 +411,11 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				return
 			}
 
->>>>>>> 237dca4 (Initial commit)
 			var currentFee float64
 			var phoneNumber string
 			err = db.QueryRow("SELECT fee, phone FROM registration WHERE adm = ?", adm).Scan(&currentFee, &phoneNumber)
 			if err != nil {
 				if err == sql.ErrNoRows {
-<<<<<<< HEAD
-					log.Printf("[ERROR] No student found with admission number: %s", adm)
-					http.Error(w, "Admission number not found.", http.StatusNotFound)
-					return
-				}
-				log.Printf("[ERROR] Failed to fetch student details: %v", err)
-				http.Error(w, "Error fetching fee. Please try again later.", http.StatusInternalServerError)
-				return
-			}
-
-			// Update student fee balance
-			sqlUpdate := "UPDATE registration SET fee = fee - ? WHERE adm = ?"
-			result, err := db.Exec(sqlUpdate, amt, adm)
-			if err != nil {
-				log.Printf("[ERROR] Failed to update fee for admission number %s: %v", adm, err)
-				http.Error(w, "Error updating fee. Please try again later.", http.StatusInternalServerError)
-				return
-			}
-
-			// Check if any rows were affected
-			rowsAffected, _ := result.RowsAffected()
-			if rowsAffected == 0 {
-				log.Printf("[ERROR] No student found with admission number: %s", adm)
-				http.Error(w, "Admission number not found.", http.StatusNotFound)
-				return
-			}
-
-			// Calculate new balance
-			newBalance := currentFee - amt
-
-			// Insert payment record
-			sqlInsert := "INSERT INTO payment (adm, amount, bal) VALUES (?, ?, ?)"
-			_, err = db.Exec(sqlInsert, adm, amt, newBalance)
-			if err != nil {
-				log.Printf("[ERROR] Failed to record payment for admission number %s: %v", adm, err)
-				http.Error(w, "Error recording payment. Please try again later.", http.StatusInternalServerError)
-				return
-			}
-
-			// ✅ Send SMS Notification
-=======
 					http.Error(w, "Admission number not found", http.StatusNotFound)
 					return
 				}
@@ -522,26 +439,10 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				return
 			}
 
->>>>>>> 237dca4 (Initial commit)
 			if phoneNumber != "" {
 				message := "Dear Parent/Guardian, a payment of KES " + strconv.FormatFloat(amt, 'f', 2, 64) +
 					" has been received for student ADM " + adm + ". New balance: KES " + strconv.FormatFloat(newBalance, 'f', 2, 64)
 
-<<<<<<< HEAD
-				log.Printf("[INFO] Sending SMS notification to %s: %s", phoneNumber, message)
-
-				err := SendSms(strings.TrimSpace(phoneNumber), message)
-				if err != nil {
-					log.Printf("[ERROR] Failed to send SMS to %s: %v", phoneNumber, err)
-				} else {
-					log.Printf("[SUCCESS] SMS sent successfully to %s", phoneNumber)
-				}
-			} else {
-				log.Println("[WARNING] No phone number found for the student, skipping SMS notification")
-			}
-
-			// Redirect to the payment page with success status
-=======
 				log.Printf("[INFO] Sending SMS to %s: %s", phoneNumber, message)
 				err := SendSms(strings.TrimSpace(phoneNumber), message)
 				if err != nil {
@@ -549,20 +450,12 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				}
 			}
 
->>>>>>> 237dca4 (Initial commit)
 			http.Redirect(w, r, "/payfee?success=true", http.StatusSeeOther)
 			return
 		}
 
-<<<<<<< HEAD
-		// Fetch recent payments for display
 		rows, err := db.Query("SELECT id, adm, date, amount, bal, (SELECT SUM(amount) FROM payment) AS total_amount, (SELECT SUM(bal) FROM payment) AS total_balance FROM payment ORDER BY id DESC")
 		if err != nil {
-			log.Println("[ERROR] Failed to fetch payments:", err)
-=======
-		rows, err := db.Query("SELECT id, adm, date, amount, bal, (SELECT SUM(amount) FROM payment) AS total_amount, (SELECT SUM(bal) FROM payment) AS total_balance FROM payment ORDER BY id DESC")
-		if err != nil {
->>>>>>> 237dca4 (Initial commit)
 			http.Error(w, "Failed to fetch payments", http.StatusInternalServerError)
 			return
 		}
@@ -571,27 +464,14 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		var payments []Payment
 		for rows.Next() {
 			var p Payment
-<<<<<<< HEAD
-			err := rows.Scan(&p.ID, &p.Adm, &p.Date, &p.Amount, &p.Balance, &p.Tot, &p.Balo)
-			if err != nil {
-				log.Println("[ERROR] Failed to scan payment record:", err)
-=======
 			if err := rows.Scan(&p.ID, &p.Adm, &p.Date, &p.Amount, &p.Balance, &p.Tot, &p.Balo); err != nil {
->>>>>>> 237dca4 (Initial commit)
 				continue
 			}
 			payments = append(payments, p)
 		}
 
-<<<<<<< HEAD
-		// Fetch class data
 		classRows, err := db.Query("SELECT id, class FROM classes")
 		if err != nil {
-			log.Println("[ERROR] Failed to fetch classes:", err)
-=======
-		classRows, err := db.Query("SELECT id, class FROM classes")
-		if err != nil {
->>>>>>> 237dca4 (Initial commit)
 			http.Error(w, "Failed to fetch classes", http.StatusInternalServerError)
 			return
 		}
@@ -606,36 +486,18 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 				ID   int
 				Name string
 			}
-<<<<<<< HEAD
-			err := classRows.Scan(&cls.ID, &cls.Name)
-			if err != nil {
-				log.Println("[ERROR] Failed to scan class record:", err)
-=======
 			if err := classRows.Scan(&cls.ID, &cls.Name); err != nil {
->>>>>>> 237dca4 (Initial commit)
 				continue
 			}
 			classes = append(classes, cls)
 		}
 
-<<<<<<< HEAD
-		// Prepare data for rendering the template
-=======
->>>>>>> 237dca4 (Initial commit)
 		data := struct {
 			Payments []Payment
 			Classes  []struct {
 				ID   int
 				Name string
 			}
-<<<<<<< HEAD
-		}{
-			Payments: payments,
-			Classes:  classes,
-		}
-
-		// Load and render templates
-=======
 			Role string
 		}{
 			Payments: payments,
@@ -643,7 +505,6 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			Role:     rada,
 		}
 
->>>>>>> 237dca4 (Initial commit)
 		tmpl, err := template.ParseFiles(
 			"templates/payfee.html",
 			"includes/header.html",
@@ -651,29 +512,14 @@ func PayFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			"includes/footer.html",
 		)
 		if err != nil {
-<<<<<<< HEAD
-			log.Printf("[ERROR] Failed to parse templates: %v", err)
-=======
->>>>>>> 237dca4 (Initial commit)
 			http.Error(w, "Failed to load page", http.StatusInternalServerError)
 			return
 		}
 
-<<<<<<< HEAD
-		// Execute the template with the provided data
-		err = tmpl.Execute(w, data)
-		if err != nil {
-			log.Printf("[ERROR] Failed to render template: %v", err)
-			http.Error(w, "Failed to render page", http.StatusInternalServerError)
-		}
-	} else {
-		// Redirect unauthorized users to the login page
-=======
 		if err := tmpl.Execute(w, data); err != nil {
 			http.Error(w, "Failed to render page", http.StatusInternalServerError)
 		}
 	} else {
->>>>>>> 237dca4 (Initial commit)
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }

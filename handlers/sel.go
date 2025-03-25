@@ -20,13 +20,9 @@ func Sel(db *sql.DB) http.HandlerFunc {
 			return
 		}
 
-<<<<<<< HEAD
-		role := roleCookie.Value
-=======
 
 	role := roleCookie.Value
 	
->>>>>>> 237dca4 (Initial commit)
 		// If role is "admin", proceed to handle the request
 		if role == "admin" {
 			// Fetch classes from the `classes` table

@@ -17,10 +17,6 @@ func Insert(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-<<<<<<< HEAD
-	
-	role := roleCookie.Value
-=======
 	// radaCookie, err := r.Cookie("rada")
 	// if err != nil {
 	// 	log.Printf("Error getting rada cookie: %v", err)
@@ -30,7 +26,6 @@ func Insert(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 	role := roleCookie.Value
 	//rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {

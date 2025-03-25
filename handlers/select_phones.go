@@ -18,10 +18,6 @@ func SelectPhonesHandler(db *sql.DB) http.HandlerFunc {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-<<<<<<< HEAD
-	
-	role := roleCookie.Value
-=======
 	// radaCookie, err := r.Cookie("rada")
 	// if err != nil {
 	// 	log.Printf("Error getting rada cookie: %v", err)
@@ -31,7 +27,6 @@ func SelectPhonesHandler(db *sql.DB) http.HandlerFunc {
 
 	role := roleCookie.Value
 	//rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {

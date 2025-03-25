@@ -90,10 +90,6 @@ func Send(w http.ResponseWriter, r *http.Request, db *sql.DB){
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
-<<<<<<< HEAD
-
-    role := roleCookie.Value // Get the role value from the cookie
-=======
 radaCookie, err := r.Cookie("rada")
     if err != nil {
         log.Printf("Error getting rada cookie: %v", err)
@@ -103,7 +99,6 @@ radaCookie, err := r.Cookie("rada")
 
     role := roleCookie.Value
     rada := radaCookie.Value // Get the role value from the cookie
->>>>>>> 237dca4 (Initial commit)
 
     // If the user's role is "admin", grant access to the SMS sending functionality
     if role == "admin" {
@@ -154,10 +149,7 @@ radaCookie, err := r.Cookie("rada")
         // Prepare data to pass to the template
         data := map[string]interface{}{
             "Title": "Send SMS",
-<<<<<<< HEAD
-=======
             "Role": rada,
->>>>>>> 237dca4 (Initial commit)
         }
 
         // Render the template and send it to the client

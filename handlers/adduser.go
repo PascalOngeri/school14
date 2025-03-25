@@ -4,14 +4,9 @@ import (
 	"database/sql"
 	"html/template"
 	"log"
-<<<<<<< HEAD
-	"net/http"
-
-=======
 	"fmt"
 	"net/http"
 "encoding/json"
->>>>>>> 237dca4 (Initial commit)
 	"golang.org/x/crypto/bcrypt"
 	
 )
@@ -29,13 +24,9 @@ roleCookie, err := r.Cookie("role")
 		return
 	}
 	
-<<<<<<< HEAD
-	role := roleCookie.Value
-=======
 
 	role := roleCookie.Value
 	//rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -57,10 +48,7 @@ roleCookie, err := r.Cookie("role")
 				email := r.FormValue("email")
 				pass := r.FormValue("password")
 				username := r.FormValue("username")
-<<<<<<< HEAD
-=======
 				role := r.FormValue("role")
->>>>>>> 237dca4 (Initial commit)
 
 				// Validate input
 				if AName == "" || mobno == "" || email == "" || pass == "" || username == "" {
@@ -78,13 +66,8 @@ roleCookie, err := r.Cookie("role")
 				}
  log.Printf("Authenticated user: %s",  hashedPassword)
 				// Insert data into the database
-<<<<<<< HEAD
-				query := `INSERT INTO tbladmin (AdminName, Email, UserName, Password, MobileNumber) VALUES (?, ?, ?, ?, ?)`
-				_, err = db.Exec(query, AName, email, username, pass, mobno)
-=======
 				query := `INSERT INTO tbladmin (AdminName, Email, UserName, Password, MobileNumber,role) VALUES (?,?, ?, ?, ?, ?)`
 				_, err = db.Exec(query, AName, email, username, pass, mobno,role)
->>>>>>> 237dca4 (Initial commit)
 				if err != nil {
 					log.Printf("Database insertion error: %v", err)
 					http.Error(w, "Failed to add user: "+err.Error(), http.StatusInternalServerError)
@@ -151,8 +134,6 @@ roleCookie, err := r.Cookie("role")
 	}
 }
 }
-<<<<<<< HEAD
-=======
 // FetchAllUsers retrieves all users from the tbladmin table
 func FetchAllUsers(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -310,4 +291,3 @@ if role == "" {
 http.Redirect(w, r, "/adduser", http.StatusSeeOther)
     }
 }
->>>>>>> 237dca4 (Initial commit)

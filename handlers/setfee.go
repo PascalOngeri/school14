@@ -14,9 +14,6 @@ import (
 // SetFeeHandler handles the Set Fee page
 func SetFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Parse templates
-<<<<<<< HEAD
-
-=======
 radaCookie, err := r.Cookie("rada")
 	if err != nil {
 		log.Printf("Error getting rada cookie: %v", err)
@@ -26,7 +23,6 @@ radaCookie, err := r.Cookie("rada")
 
 	
 	rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	tmpl, err := template.ParseFiles(
 		"templates/regfee.html",
 		"includes/header.html",
@@ -101,10 +97,7 @@ radaCookie, err := r.Cookie("rada")
 		"Classes": classes,
 		"Message": message,
 		"Total":   total,
-<<<<<<< HEAD
-=======
 			"Role":   rada,
->>>>>>> 237dca4 (Initial commit)
 	}
 
 	// Render the template

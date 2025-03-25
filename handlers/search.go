@@ -40,10 +40,6 @@ func searchStudentHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-<<<<<<< HEAD
-	
-	role := roleCookie.Value
-=======
 	radaCookie, err := r.Cookie("rada")
 	if err != nil {
 		log.Printf("Error getting rada cookie: %v", err)
@@ -53,7 +49,6 @@ func searchStudentHandler(w http.ResponseWriter, r *http.Request) {
 
 	role := roleCookie.Value
 	rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -128,18 +123,12 @@ func searchStudentHandler(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Error parsing template files: %v", err)
 			return
 		}
-<<<<<<< HEAD
-
-		// Execute the template (empty data for initial search page)
-		err = tmpl.Execute(w, nil)
-=======
 data := map[string]interface{}{
 			"Title": "Admin Dashboard",
 			"Role":  rada,
 		}
 		// Execute the template (empty data for initial search page)
 		err = tmpl.Execute(w,data)
->>>>>>> 237dca4 (Initial commit)
 		if err != nil {
 			http.Error(w, "Error executing template: "+err.Error(), http.StatusInternalServerError)
 			log.Printf("Error executing template: %v", err)

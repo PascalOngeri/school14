@@ -18,10 +18,6 @@ func EditOtherPaymentHandler(db *sql.DB) http.HandlerFunc {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-<<<<<<< HEAD
-	
-	role := roleCookie.Value
-=======
 	radaCookie, err := r.Cookie("rada")
 	if err != nil {
 		log.Printf("Error getting rada cookie: %v", err)
@@ -31,7 +27,6 @@ func EditOtherPaymentHandler(db *sql.DB) http.HandlerFunc {
 
 	role := roleCookie.Value
 	rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -109,18 +104,12 @@ var err error
 			http.Error(w, "Error loading template", http.StatusInternalServerError)
 			return
 		}
-<<<<<<< HEAD
-
-		// Render the template with payment data
-		err = tmpl.Execute(w, payment)
-=======
 data := map[string]interface{}{
 			"Title": payment,
 			"Role":  rada,
 		}
 		// Render the template with payment data
 		err = tmpl.Execute(w, data)
->>>>>>> 237dca4 (Initial commit)
 		if err != nil {
 			log.Printf("Error rendering template: %v", err)
 			http.Error(w, "Error rendering template", http.StatusInternalServerError)

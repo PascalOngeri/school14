@@ -14,10 +14,6 @@ func optionalpay(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
-<<<<<<< HEAD
-	
-	role := roleCookie.Value
-=======
 	radaCookie, err := r.Cookie("rada")
 	if err != nil {
 		log.Printf("Error getting rada cookie: %v", err)
@@ -27,7 +23,6 @@ func optionalpay(w http.ResponseWriter, r *http.Request) {
 
 	role := roleCookie.Value
 	rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	if role == "admin" {
@@ -41,10 +36,7 @@ func optionalpay(w http.ResponseWriter, r *http.Request) {
 	// Data to pass to the template
 	data := map[string]interface{}{
 		"Title": "Manage Class", // Example dynamic data
-<<<<<<< HEAD
-=======
 		"Role": rada,
->>>>>>> 237dca4 (Initial commit)
 	}
 
 	// Execute the template and write to the response

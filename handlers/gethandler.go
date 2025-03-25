@@ -19,10 +19,7 @@ func Gey(w http.ResponseWriter, r *http.Request, db *sql.DB) {
     }
 
     role := roleCookie.Value
-<<<<<<< HEAD
-=======
     //rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 
     // Check if the role is admin
     if role != "admin" {

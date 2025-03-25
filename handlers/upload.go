@@ -2,22 +2,11 @@ package handlers
 
 import (
 	"encoding/csv"
-<<<<<<< HEAD
-=======
 	"fmt"
->>>>>>> 237dca4 (Initial commit)
 	"html/template"
 	"io"
 	"net/http"
 	"strings"
-<<<<<<< HEAD
-	"fmt"
-)
-
-// UploadPage serves the HTML page for the file upload.
-func UploadPage(w http.ResponseWriter, r *http.Request) {
-	
-=======
 )
 
 // UploadPageData holds data for rendering templates
@@ -28,7 +17,6 @@ type UploadPageData struct {
 
 // UploadPage serves the HTML page for the file upload.
 func UploadPage(w http.ResponseWriter, r *http.Request) {
->>>>>>> 237dca4 (Initial commit)
 	tmpl, err := template.ParseFiles("templates/send.html", "includes/footer.html", "includes/header.html", "includes/sidebar.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -47,11 +35,7 @@ func HandleFileUpload(w http.ResponseWriter, r *http.Request) {
 	// Parse the uploaded file
 	file, fileHeader, err := r.FormFile("file")
 	if err != nil {
-<<<<<<< HEAD
-		http.Error(w, "Failed to upload file: "+err.Error(), http.StatusInternalServerError)
-=======
 		http.Error(w, "Failed to upload file: "+err.Error(), http.StatusBadRequest)
->>>>>>> 237dca4 (Initial commit)
 		return
 	}
 	defer file.Close()
@@ -71,15 +55,6 @@ func HandleFileUpload(w http.ResponseWriter, r *http.Request) {
 
 	// Join phone numbers
 	phoneString := strings.Join(phoneNumbers, ",")
-<<<<<<< HEAD
-	data := struct {
-		PhoneNumbers string
-	}{
-		PhoneNumbers: phoneString,
-	}
-
-	// Render the template with phone numbers
-=======
 
 	// Replace "UserRoleHere" with actual logic to fetch the user's role
 	data := UploadPageData{
@@ -88,21 +63,12 @@ func HandleFileUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Parse templates only if no errors occurred
->>>>>>> 237dca4 (Initial commit)
 	tmpl, err := template.ParseFiles("templates/send.html", "includes/footer.html", "includes/header.html", "includes/sidebar.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-<<<<<<< HEAD
-	err = tmpl.ExecuteTemplate(w, "send.html", data)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-=======
 	// Execute template safely
 	if err := tmpl.ExecuteTemplate(w, "send.html", data); err != nil {
 		fmt.Println("Template execution error:", err) // Log error instead of writing HTTP response again
@@ -110,7 +76,6 @@ func HandleFileUpload(w http.ResponseWriter, r *http.Request) {
 }
 
 // processCSV reads and extracts phone numbers from a CSV file.
->>>>>>> 237dca4 (Initial commit)
 func processCSV(file io.Reader) ([]string, error) {
 	var phoneNumbers []string
 	reader := csv.NewReader(file)
@@ -138,7 +103,3 @@ func processCSV(file io.Reader) ([]string, error) {
 
 	return phoneNumbers, nil
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 237dca4 (Initial commit)

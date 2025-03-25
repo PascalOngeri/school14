@@ -11,25 +11,11 @@ import (
 // ResetPasswordHandler handles the password reset process
 func ResetPasswordHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-<<<<<<< HEAD
-		roleCookie, err := r.Cookie("role")
-	if err != nil {
-		log.Printf("Error getting role cookie: %v", err)
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
-		return
-	}
-	
-	role := roleCookie.Value
-	//userID := r.URL.Query().Get("userID")
-	// If role is "admin", show the dashboard
-	if role == "admin" {
-=======
 		
 	//rada := radaCookie.Value
 	//userID := r.URL.Query().Get("userID")
 	// If role is "admin", show the dashboard
 	
->>>>>>> 237dca4 (Initial commit)
 		if r.Method == http.MethodGet {
 			// Render the password reset form
 			tmpl, err := template.ParseFiles("templates/reset.html")
@@ -85,13 +71,6 @@ func ResetPasswordHandler(db *sql.DB) http.HandlerFunc {
 			// Redirect to a success page
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 		}
-<<<<<<< HEAD
-	}else {
-		// If role is not recognized, redirect to login
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
-	}
-=======
 	
->>>>>>> 237dca4 (Initial commit)
 }
 }

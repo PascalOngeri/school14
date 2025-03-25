@@ -97,11 +97,7 @@ func TransportPaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB)
 	}
 
 	// Render the form if not POST
-<<<<<<< HEAD
-	renderForm(w, db, "templates/optionalpay.html")
-=======
 	renderForm(w,r, db, "templates/optionalpay.html")
->>>>>>> 237dca4 (Initial commit)
 }
 
 
@@ -181,11 +177,7 @@ func OptionalPaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) 
         }
 
         // Render the form if not POST
-<<<<<<< HEAD
-        renderForm(w, db, "templates/optionalpay.html")
-=======
         renderForm(w,r, db, "templates/optionalpay.html")
->>>>>>> 237dca4 (Initial commit)
     } else {
         // If role is not recognized, redirect to login
         http.Redirect(w, r, "/login", http.StatusSeeOther)
@@ -193,12 +185,8 @@ func OptionalPaymentHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) 
 }
 
 // renderForm renders the optional payment form with data from the database.
-<<<<<<< HEAD
-func renderForm(w http.ResponseWriter, db *sql.DB, templateFile string) {
-=======
 func renderForm(w http.ResponseWriter, r *http.Request, db *sql.DB, templateFile string) {
 
->>>>>>> 237dca4 (Initial commit)
 	tmpl, err := template.ParseFiles("templates/optionalpay.html",
 		"includes/header.html",
 		"includes/sidebar.html",
@@ -208,8 +196,6 @@ func renderForm(w http.ResponseWriter, r *http.Request, db *sql.DB, templateFile
 		http.Error(w, "Failed to load page templates.", http.StatusInternalServerError)
 		return
 	}
-<<<<<<< HEAD
-=======
 	radaCookie, err := r.Cookie("rada")
 	if err != nil {
 		log.Printf("Error getting rada cookie: %v", err)
@@ -219,7 +205,6 @@ func renderForm(w http.ResponseWriter, r *http.Request, db *sql.DB, templateFile
 
 	//role := roleCookie.Value
 	rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
 
 	// Fetch all payments and areas
 	rows, err := db.Query("SELECT id, type AS name FROM other")
@@ -263,17 +248,11 @@ func renderForm(w http.ResponseWriter, r *http.Request, db *sql.DB, templateFile
 	data := struct {
 		Payments []Payment
 		Areas    []Area
-<<<<<<< HEAD
-	}{
-		Payments: payments,
-		Areas:    areas,
-=======
 		Role string
 	}{
 		Payments: payments,
 		Areas:    areas,
 		Role: rada,
->>>>>>> 237dca4 (Initial commit)
 	}
 
 	err = tmpl.Execute(w, data)

@@ -16,15 +16,10 @@ func ExportHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
         http.Redirect(w, r, "/login", http.StatusSeeOther)
         return
     }
-<<<<<<< HEAD
-    
-    role := roleCookie.Value
-=======
    
 
     role := roleCookie.Value
    // rada := radaCookie.Value
->>>>>>> 237dca4 (Initial commit)
     //userID := r.URL.Query().Get("userID")
     // If role is "admin", show the dashboard
     if role == "admin" {
